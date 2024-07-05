@@ -27,7 +27,7 @@ const Home = () => {
     })
   }
   const PostAPI = ()=>{
-    setPostResponse("Set API called");
+    console.log("Set API called");
   
   }
   return (
