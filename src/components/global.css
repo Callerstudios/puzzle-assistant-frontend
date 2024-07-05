@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Futura-book;
+}
+@font-face {
+    font-family: futura-bold;
+    src: url(../font/FuturaPTBold.otf);
+}
+@font-face {
+    font-family: futura-light;
+    src: url(../font/FuturaPTLight.otf);
+}
+@font-face {
+    font-family: futura-medium;
+    src: url(../font/FuturaPTMedium.otf);
+}
+@font-face {
+    font-family: futura-book;
+    src: url(../font/FuturaPTBook.otf);
+}
+.bold{
+    font-family: futura-bold;
+}

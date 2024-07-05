@@ -1,0 +1,9 @@
+.hero{
+    display: flex;
+    gap: 50px;
+}
+.hero div{
+    background-color: red;
+    height: 300px;
+    width: 100%;
+}
