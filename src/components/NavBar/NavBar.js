@@ -5,19 +5,19 @@ import { Link } from "react-router-dom";
 
 export const ShowActive = () => {
   const [active, setActive] = useState(false);
-  PostReq();
+  getReq();
   // axios.get('http://localhost:5000/').
   // then(res => console.log(res))
   // console.log(response)
   return active;
 };
 const getReq = () => {
-  fetch("http://localhost:5000/about")
+  fetch("http://localhost:5000/read?fileName=testfile.txt")
     .then((res) => {
       if (!res.ok) {
         throw new Error("Network response was not OK");
       }
-      // console.log(res);
+      // console.log("Sent");
       return res.text();
     })
     .then((text) => {
@@ -27,9 +27,15 @@ const getReq = () => {
       console.log(err);
     });
 };
-const PostReq = () => {
-  const data = ["James", 'Gideon', "Sarah"]
-  axios.post("http://localhost:5000", data).then(res=>console.log(res.data)).catch(err=>console.log(err))
+const postReq = () => {
+  const data = "Hello there"
+  axios.post("http://localhost:5000", data, 
+    {
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+    }
+  ).then(res=>console.log(res.data)).catch(err=>console.log(err))
 };
 const NavBar = () => {
   return (
