@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const ShowActive = () => {
   const [active, setActive] = useState(false);
-  getReq();
+  // getReq();
   // axios.get('http://localhost:5000/').
   // then(res => console.log(res))
   // console.log(response)
