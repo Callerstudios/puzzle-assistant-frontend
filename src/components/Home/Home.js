@@ -1,63 +1,47 @@
 import React from "react";
-import { useState } from "react";
-import axios from "axios";
+import { useNavigate } from 'react-router-dom'
+import { connect } from "react-redux";
 import SearchBar from "../SearchBar/SearchBar";
-import "./Home.css"
+import myImage from '../../IMAGES/terminal-image.webp'
+import "./Home.css";
+import { setOnline } from "../../redux/online/OnlineActions";
 
-
-const Home = () => {
-  const list1 = {A: 'C',B: 'B',C: 'C',D: 'D'}
-  const num = {...list1, A:'A'}
-  const [getresponse, setGetResponse] = useState("Get")
-  const [fileName, setFileName] = useState("user1.json")
-
-  const updateGetQueryFileName = (e)=>{
-    setFileName(e.target.value)
-    // console.log(e.target.value);
-  }
-  
-  const GetAPI = () =>{
-    console.log("Get API called");
-    axios.get(`http://localhost:5000/read/1?fileName=${fileName}`).then(res=>{
-      // console.log(Object.entries(res.data));
-      const keys = Object.getOwnPropertyNames(res.data)
-      const values = Object.values(res.data)
-      console.log(keys);
-      const response = JSON.stringify(res.data)
-      setGetResponse(`${response}:::${typeof(response)}`)
-    }).catch(err=>{
-      setGetResponse("There was an error")
-    })
-  }
-  const PostAPI = ()=>{
-    console.log("Set API called");
-    axios.post(`http://localhost:5000/write?fileName=${fileName}`, {
-      key: "James",
-      value: "password1234"
-    }).then(res=>console.log(res.data)).catch(err=>console.log(err))
-  }
+function Home(props) {
   return (
     <div>
       <SearchBar />
-       <p>Home{num.A}</p>
-      <button>Login</button>
-      <button>Sign Up</button>
-      <div className="hero">
-        <div>
-          <p>left</p>
-          <input onChange={updateGetQueryFileName} value={fileName} placeholder="Enter file name"/>
-          <button onClick={GetAPI}>Get Request</button>
-          <p>{getresponse}</p>
+      <p>Online: {String(props.online)}</p>
+      <div className="gamesGrid">
+        <div className="games">
+          <button>
+            <img src={`${process.env.PUBLIC_URL}/IMAGES/terminal-image.webp`} />
+          <p className="bold">Terminal</p>
+          </button>
         </div>
-        <div>
-          <p>right</p>
-          <input onChange={updateGetQueryFileName} value={fileName} placeholder="Enter file name"/>
-          <input placeholder="Enter file value"/>
-          <button onClick={PostAPI}>Set Value</button> <br/>
+        <div className="games">
+        <button>
+            <img src={myImage} />
+          <p className="bold">Terminal</p>
+          </button>
         </div>
+        <div className="games"></div>
+        <div className="games"></div>
       </div>
     </div>
   );
-};
+}
 
-export default Home;
+const mapStateToProps = (state)=>{
+    // console.log();
+    return{
+        online: state.online
+    }
+}
+
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        setOnline: ()=> dispatch(setOnline)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (Home);

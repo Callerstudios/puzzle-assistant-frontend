@@ -1,39 +1,54 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import "./Login.css";
 
+export const ShowActive = (bool) => {
+  const [active, setActive] = useState(false);
+  return active;
+};
+
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("james");
+  const [password, setPassword] = useState("password1234");
   const [feedback, setFeedback] = useState("");
-  const [usernameMessage, setUsernameMessage] = useState("good")
-  const [passwordMessage, setpasswordMessage] = useState("better")
+  const [showLoading, setShowLoading] = useState(false)
+  const [usernameMessage, setUsernameMessage] = useState(" ");
+  const [passwordMessage, setpasswordMessage] = useState(" ");
   const navigate = useNavigate("/");
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
 
   const handleRedirect = (redirectPath) => {
-    setTimeout(()=>navigate(redirectPath), 3000)
+    navigate(redirectPath);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
+    let canSubmit = false;
+    if (username.length > 0 && password.length > 0) {
+      canSubmit = true;
+    }
+    if (canSubmit) {
+      setShowLoading(true);
+      axios
       .get(
         `http://localhost:5000/verify?username=${username}&password=${password}`
       )
       .then((res) => {
         console.log(res.data.message);
-        if (res.data.success === 'true'){
-          handleRedirect("/");
+        if (res.data.success === "true") {
+          setTimeout(()=>handleRedirect("/"), 1000)
+          // ShowActive(true)
         }
-        else{
-          setFeedback(res.data.message)
-        }
-      });
+        setFeedback(res.data.message);
+        setShowLoading(false);
+        });
+    }
+
+    const usernameReply = username.length === 0 ? "Enter a username" : "";
+    const passwordReply = password.length === 0 ? "Enter a password" : "";
+    setUsernameMessage(usernameReply);
+    setpasswordMessage(passwordReply);
   };
 
   const updateUsernameInput = (e) => {
@@ -47,6 +62,7 @@ function Login() {
 
   return (
     <div>
+      {showLoading && <LoadingSpinner/>}
       <p>Login</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Enter username: </label>
@@ -56,6 +72,7 @@ function Login() {
           placeholder="james231"
           value={username}
         />
+        <p className="feedback">{usernameMessage}</p>
         <br />
         <br />
         <br />
@@ -66,12 +83,13 @@ function Login() {
           placeholder="password"
           value={password}
         />
+        <p className="feedback">{passwordMessage}</p>
         <br />
         <br />
         <br />
         <button type="submit ">Submit</button>
+        <p className="feedback">{feedback}</p>
       </form>
-      <p className="feedback">{feedback}</p>
     </div>
   );
 }
