@@ -3,17 +3,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import "./Login.css";
+import { connect } from "react-redux";
+import { setOnline } from "../../redux/online/OnlineActions";
 
-export const ShowActive = (bool) => {
-  const [active, setActive] = useState(false);
-  return active;
-};
 
-function Login() {
+function Login(props) {
   const [username, setUsername] = useState("james");
   const [password, setPassword] = useState("password1234");
   const [feedback, setFeedback] = useState("");
-  const [showLoading, setShowLoading] = useState(false)
+  const [showLoading, setShowLoading] = useState(false);
   const [usernameMessage, setUsernameMessage] = useState(" ");
   const [passwordMessage, setpasswordMessage] = useState(" ");
   const navigate = useNavigate("/");
@@ -29,19 +27,23 @@ function Login() {
       canSubmit = true;
     }
     if (canSubmit) {
+      setFeedback("");
       setShowLoading(true);
       axios
-      .get(
-        `http://localhost:5000/verify?username=${username}&password=${password}`
-      )
-      .then((res) => {
-        console.log(res.data.message);
-        if (res.data.success === "true") {
-          setTimeout(()=>handleRedirect("/"), 1000)
-          // ShowActive(true)
-        }
-        setFeedback(res.data.message);
-        setShowLoading(false);
+        .get(
+          `http://localhost:5000/verify?username=${username}&password=${password}`
+        )
+        .then((res) => {
+          if (res.data.success === "true") {
+            props.setOnline()
+            setTimeout(() => handleRedirect("/"), 1000);
+          }
+          setFeedback(res.data.message);
+          setShowLoading(false);
+        })
+        .catch((err) => {
+          setFeedback(err.message);
+          setShowLoading(false);
         });
     }
 
@@ -52,7 +54,6 @@ function Login() {
   };
 
   const updateUsernameInput = (e) => {
-    // console.log(e.target.id)
     if (e.target.id === "username") {
       setUsername(e.target.value);
     } else if (e.target.id === "password") {
@@ -62,7 +63,7 @@ function Login() {
 
   return (
     <div>
-      {showLoading && <LoadingSpinner/>}
+      {showLoading && <LoadingSpinner />}
       <p>Login</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Enter username: </label>
@@ -87,11 +88,23 @@ function Login() {
         <br />
         <br />
         <br />
-        <button type="submit ">Submit</button>
+        <button type="submit">Submit</button>
         <p className="feedback">{feedback}</p>
       </form>
     </div>
   );
 }
 
-export default Login;
+const mapStateToProps = (state)=>{
+  return{
+      online: state.online
+  }
+}
+
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        setOnline: ()=> {dispatch(setOnline())}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (Login);

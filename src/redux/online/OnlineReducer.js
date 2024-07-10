@@ -1,18 +1,18 @@
-import { USER_ONLINE } from "./OnlineTypes"
+import { USER_ONLINE } from "./OnlineTypes";
 
 const initialState = {
-    online: false
-}
+  online: false,
+};
 
-const OnlineReducer = (state=initialState, action)=>{
-     switch(action.type){
-        case USER_ONLINE:
-            return{
-                online: true
-            }
-        default:
-            return state
-     }
-}
+const OnlineReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case USER_ONLINE:
+      return {
+        online: true,
+      };
+    default:
+      return state;
+  }
+};
 
-export default OnlineReducer
+export default OnlineReducer;

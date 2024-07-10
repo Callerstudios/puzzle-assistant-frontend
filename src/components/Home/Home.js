@@ -1,10 +1,10 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom'
 import { connect } from "react-redux";
 import SearchBar from "../SearchBar/SearchBar";
 import myImage from '../../IMAGES/terminal-image.webp'
 import "./Home.css";
 import { setOnline } from "../../redux/online/OnlineActions";
+// import mapStateToProps from "../selectors";
 
 function Home(props) {
   return (
@@ -32,16 +32,15 @@ function Home(props) {
 }
 
 const mapStateToProps = (state)=>{
-    // console.log();
     return{
         online: state.online
     }
 }
 
-const mapDispatchToProps = (dispatch)=>{
-    return {
-        setOnline: ()=> dispatch(setOnline)
-    }
-}
+// const mapDispatchToProps = (dispatch)=>{
+//     return {
+//         setOnline: ()=> dispatch(setOnline())
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps) (Home);
+export default connect(mapStateToProps) (Home);
