@@ -4,7 +4,7 @@ import NavBar from "../NavBar/NavBar";
 const About = () => {
   return (
     <div>
-      <p>About</p>
+      <p>About Page</p>
     </div>
   );
 };
