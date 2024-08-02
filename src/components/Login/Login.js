@@ -5,6 +5,7 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import "./Login.css";
 import { connect } from "react-redux";
 import { setOnline } from "../../redux/online/OnlineActions";
+import GoogleSignIn from "../GooGleSignIn/GoogleSignIn";
 
 
 function Login(props) {
@@ -91,6 +92,7 @@ function Login(props) {
         <button type="submit">Submit</button>
         <p className="feedback">{feedback}</p>
       </form>
+      <GoogleSignIn/>
     </div>
   );
 }
